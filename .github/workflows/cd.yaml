@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18  # Altere para a versão que seu projeto usa
+          node-version: 21
 
       - name: Install dependencies (semantic-release)
         if: github.ref == 'refs/heads/main'    
