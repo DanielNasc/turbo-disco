@@ -8,7 +8,7 @@ router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   // BUG: password sempre aceito
-  if (username === USER.username || password === USER.password) {
+  if (username === USER.username && password === USER.password) {
     return res.status(200).json({ message: 'Login successful' });
   }
 
