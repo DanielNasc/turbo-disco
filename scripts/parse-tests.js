@@ -13,8 +13,7 @@ if (failed > 0) {
     .flatMap(r => r.assertionResults)
     .filter(t => t.status === "failed")
     .map(t => {
-      const msg = t.failureMessages.join("\n  ");
-      return `- ${t.fullName}\n  \`\`\`\n  ${msg}\n  \`\`\``;
+      return `- ${t.fullName}\n`;
     })
     .join("\n\n");
 
