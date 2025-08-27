@@ -7,13 +7,12 @@ q
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  // BUG: sempre rejeta as credenciais
-  return res.status(401).json({ message: 'Invalid credentials' });
-
-
+  // BUG: password sempre aceito
   if (username === USER.username || password === USER.password) {
     return res.status(200).json({ message: 'Login successful' });
   }
+
+  return res.status(401).json({ message: 'Invalid credentials' });
 });
 
 module.exports = router;
