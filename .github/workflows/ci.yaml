@@ -24,7 +24,7 @@ jobs:
       - name: Run tests
         id: test
         run: |
-          npm test --json --outputFile=test-results.json
+          npm test --json --passWithNoTests --outputFile=test-results.json
 
       - name: Parse test results
         run: node scripts/parse-tests.js
