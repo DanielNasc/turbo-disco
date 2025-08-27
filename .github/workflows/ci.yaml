@@ -7,6 +7,10 @@ on:
       - main
       - 'feature/*'
 
+permissions:
+    contents: read
+    pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,6 +31,7 @@ jobs:
           npm test
 
       - name: Parse test results
+        if: failure()
         run: node scripts/parse-tests.js
 
       - name: Comment PR if tests failed
