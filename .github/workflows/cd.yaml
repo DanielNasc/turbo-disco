@@ -7,6 +7,10 @@ on:
       - main
       - release/**
 
+permissions:
+    contents: write
+    packages: write
+      
 jobs:
   cd:
     runs-on: ubuntu-latest
