@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Simulação de usuário
 const USER = { username: 'admin', password: '123456' };
-q
+
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
