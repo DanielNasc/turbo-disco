@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+      - 'feature/*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        id: test
+        run: |
+          npm test --json --outputFile=test-results.json || true
+
+      - name: Parse test results
+        id: summary
+        run: |
+          node -e "
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('test-results.json'));
+            const total = results.numTotalTests;
+            const passed = results.numPassedTests;
+            const failed = results.numFailedTests;
+            console.log(`TOTAL: ${total}, PASSED: ${passed}, FAILED: ${failed}`);
+            if(failed > 0) {
+              const failedTests = results.testResults
+                .flatMap(r => r.assertionResults)
+                .filter(t => t.status === 'failed')
+                .map(t => `- ${t.fullName}\n  Error: ${t.failureMessages.join('\n  ')}`)
+                .join('\n\n');
+              fs.writeFileSync('pr-comment.txt', `**Testes com falha:**\n${failedTests}`);
+            }
+          "
+
+      - name: Comment PR if tests failed
+        if: ${{ failure() || steps.summary.outputs.failed }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: pr-comment.txt
